@@ -5,7 +5,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 public class CityDAO extends AbstractDAO<City> {
-
     public CityDAO(SessionFactory sessionFactory) {
         super(City.class, sessionFactory);
     }

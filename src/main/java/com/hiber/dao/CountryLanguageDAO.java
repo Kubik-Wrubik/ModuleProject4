@@ -7,6 +7,4 @@ public class CountryLanguageDAO extends AbstractDAO<CountryLanguage> {
     public CountryLanguageDAO(SessionFactory sessionFactory) {
         super(CountryLanguage.class, sessionFactory);
     }
-
-
 }

@@ -2,6 +2,8 @@ package com.hiber.redis.cache.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 
 import java.io.BufferedReader;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RedisRepository<T> {
+    private static final Logger logger = LoggerFactory.getLogger(RedisRepository.class);
     private final Jedis jedis;
     private final ObjectMapper mapper;
     private final Class<T> typeOfDTO;
@@ -25,11 +28,12 @@ public class RedisRepository<T> {
         StringBuilder preparedRecords = new StringBuilder();
         for (T t : preparedData) {
             try {
-                preparedRecords.append(mapper.writeValueAsString(t)).append("\n");
+                preparedRecords.append(mapper.writeValueAsString(t)).append('\n');
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         }
+        logger.info("Cache has been pushed to redis database");
         jedis.set(query, preparedRecords.toString());
     }
 
@@ -42,8 +46,9 @@ public class RedisRepository<T> {
                 cityCountries.add(mapper.readValue(obj, typeOfDTO));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+        logger.info("Cache has been pulled from redis database");
         return cityCountries;
     }
     public Jedis getJedis() {
