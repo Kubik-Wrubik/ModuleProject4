@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CacheGenerator {
+
+    private final static int MAX_FREQUENCY_BEFORE_CREATING_CACHE = 10;
     private final Map<String, Integer> queryFrequencyMap;
     private final Jedis jedis;
 
@@ -24,7 +26,7 @@ public class CacheGenerator {
     }
 
     public boolean isQueryFrequencyMoreThanTen(String query) {
-        return queryFrequencyMap.get(query) > 9;
+        return queryFrequencyMap.get(query) >= MAX_FREQUENCY_BEFORE_CREATING_CACHE;
     }
 
     public boolean isKeyInRedisExist(String query) {
